@@ -82,7 +82,7 @@ if __name__=="__main__":
     #INSERT INTO usuarios (username, nombre, password, tipo)
     #VALUES (?, ?, ?, ?);
     #"""
-    #usuario_tuple = ('Xiomara', 'Xiomara Pelicier', '40399468', 'admin')
+    #usuario_tuple = ('Pepito', 'Perez', '1111', 'admin')
     #QueriesSQLite.execute_query(connection, crear_usuario, usuario_tuple)
 
     # Leer los usuarios de la tabla
