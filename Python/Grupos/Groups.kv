@@ -1,0 +1,269 @@
+
+<BotonOscurogroup@Button>:
+	background_normal: ''
+	background_color: hex('#393939')
+
+<LabelOscurogroup@Label>:
+	canvas.before:
+		Color:
+			rgba: hex('#393939')
+		Rectangle:
+			size: self.size
+			pos: self.pos
+        
+
+<SelectableBoxLayoutDetalles>:
+    # Draw a background to indicate selection
+    canvas.before:
+        Color:
+            rgba: hex('#C9F3EF') if self.selected else hex('#F0F0F0')
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    Label:
+    	id: _hashtag
+    	size_hint_x: .1
+    	color: (0,0,0,1)
+    Label:
+    	id: _Cedula
+    	size_hint_x: .3
+    	color: (0,0,0,1)
+    Label:
+    	id: _Nombre
+    	size_hint_x: .35
+    	color: (0,0,0,1)
+    Label:
+    	id: _Banco
+    	size_hint_x: .15
+    	color: (0,0,0,1)
+    Label:
+    	id: _Numero
+    	size_hint_x: .3
+    	color: (0,0,0,1)
+    Label:
+    	id: _Grupo
+    	size_hint_x: .3
+    	color: (0,0,0,1)
+    Label:
+    	id: _total
+    	size_hint_x: .3
+    	color: (0,0,0,1)
+    Label:
+        id: _interes
+        size_hint_x: .3
+        color: (0, 0, 0, 1)
+    
+<ConfirmacionPopups>:
+    size_hint: .5, .5
+    auto_dismiss: False
+    title: 'Confirmar Eliminar Estudiante'
+	halign: 'center'
+	bold: True        # Texto en negrita
+    italic: True
+    BoxLayout:
+	    orientation: 'vertical'
+	    padding: .5
+	    Label: 
+			size_hint_y: .4
+	    	text: 'Seguro que quiere eliminar todos los datos de este Estudiante'
+			text_size: self.width, None  # Ajustar el texto al ancho del Label
+			halign: 'center'
+			color: hex('#FFFFFF')
+	
+		BoxLayout:
+			size_hint_y: .1
+			Button: 
+				text: 'Aceptar'
+				on_release:
+					root.eliminar_estudiante(True)
+					root.dismiss()
+			Button:
+				text: 'Salir'
+				on_release: root.dismiss()    
+
+<AgregarEstudiantePopup>:
+    size_hint: .5, .5
+    auto_dismiss: False
+    title: 'Agregar Estudiante'
+	halign: 'center'
+	bold: True        # Texto en negrita
+    italic: True
+    BoxLayout:
+	    orientation: 'vertical'
+	    padding: .05
+	    Label:
+	    	size_hint_y: .1
+	    	id: usuario_info_1
+	    Label:
+	    	id: no_valid_notif
+	    	size_hint_y: .1
+	    TextInput: 
+			id: estudiante_cedula
+			size_hint_y: .2
+			multiline: False
+			hint_text: 'Cedula'
+			write_tab: False
+		TextInput: 
+			size_hint_y: .2
+			id: estudiante_nombre
+			multiline: False
+			hint_text: 'Nombre del Estudiante'
+			write_tab: False
+		TextInput:
+			size_hint_y: .2
+			id: estudiante_banco
+			multiline: False
+			hint_text: 'Banco de la cuenta'
+			write_tab: False
+		TextInput:
+			size_hint_y: .2
+			id: estudiante_numero
+			multiline: False
+			hint_text: 'Numero de cuenta'
+			write_tab: False
+        Label:
+            size_hint_y: .1
+            id: estudiante_grupo
+            text: ''
+        Label:
+            size_hint_y: .1
+            id: estudiante_total
+            text: ''  
+	
+		BoxLayout:
+			size_hint_y: .2
+			Button: 
+				text: 'Agregar'
+				on_release: root.verificar(estudiante_cedula.text, estudiante_nombre.text, estudiante_banco.text, estudiante_numero.text, estudiante_grupo.text, estudiante_total.text)
+			Button:
+				text: 'Salir'
+				on_release: root.dismiss()
+
+
+<GroupsRV>:
+    SelectableRecycleBoxLayoutgroup:
+        default_size: None, dp(36)
+        default_size_hint: 1, None
+        size_hint_y: None
+        height: self.minimum_height
+        orientation: 'vertical'
+        multiselect: False
+        touch_multiselect: False
+
+<GroupsWindow>:
+# Apply green color to the box and Add the text Bienvenido
+	canvas.before:
+		Color:
+			rgba: hex('#1EA82A')
+		Rectangle:
+			size: self.size
+			pos: self.pos
+	orientation: 'vertical'
+	
+	BoxLayout:
+		size_hint_y: .2
+		spacing: .2
+		Spinner:
+            id: Grupo_label
+			size_hint_x: .15
+            text: 'Selecciona un Grupo'
+            on_text: root.spinner_callback(self, self.text); root.cargar_estudiantes()
+
+		Label:
+			id: Codigo_grupo
+            text: 'Grupo N°: '
+			size_hint_x: .5
+			color: hex('#000000')
+        
+        BotonOscurogroup:
+			text: 'Inicio'
+            size_hint_x: .1
+			on_release: root.volver_inicio()
+        
+        
+        
+
+# the box contains the statements for each groups	
+	BoxLayout:
+		canvas.before:
+			Color:
+				rgba: hex('#FFFFFF')
+			Rectangle:
+				size: self.size
+				pos: self.pos
+		size_hint_y: .87
+		spacing: .5
+		orientation: 'vertical'
+		BoxLayout:
+			size_hint_y: .05
+			spacing: .5
+			LabelOscurogroup:
+				text: '#'
+				size_hint_x: .1
+			LabelOscurogroup:
+				text: 'Cedula'
+				size_hint_x: .3
+			LabelOscurogroup:
+				text: 'Nombre'
+				size_hint_x: .35
+			LabelOscurogroup:
+				text: 'Banco'
+				size_hint_x: .15
+			LabelOscurogroup:
+				text: 'Numero'
+				size_hint_x: .3
+            LabelOscurogroup:
+				text: 'Grupo'
+				size_hint_x: .3
+            LabelOscurogroup:
+				text: 'Total'
+				size_hint_x: .3
+            LabelOscurogroup:
+				text: 'Interes'
+				size_hint_x: .3
+            
+		GroupsRV:
+			viewclass: 'SelectableBoxLayoutDetalles'
+			id: rv
+		
+# the box is configured for modifying and deleting the groups	
+	BoxLayout:
+		size_hint_y: .115
+		BotonOscurogroup:
+			text: 'Agregar Estudiante'
+			on_release: root.agregar_estudiante()
+		BotonOscurogroup:
+			text: 'Ver Detalles'
+			on_release: root.detalle_estudiantes()
+		BotonOscurogroup:
+			text: 'Eliminar Estudiante'
+			on_release: root.confirmar_eliminar()
+
+# the box is set to show the loan and interest 
+	BoxLayout: 
+		canvas.before:
+			Color:
+				rgba: hex('#393939')
+			Rectangle:
+				size: self.size
+				pos: self.pos
+		size_hint_y: .05
+		Label: 
+			text: 'Total Prestado'
+			size_hint_x: .2
+			color: hex('#E53115')
+		Label:
+			id: total
+			text: '0.00'
+			size_hint_x: .4
+		Label:
+			text: 'Total Con Interes'
+			size_hint_x: .1
+		Label:
+			id: interes
+			text: '0.00'
+			size_hint_x: .4
+		
+		
+	BoxLayout:
+		size_hint_y: .03
