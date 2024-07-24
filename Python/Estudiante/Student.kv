@@ -1,0 +1,245 @@
+<BotonOscurostudent@Button>:
+	background_normal: ''
+	background_color: hex('#393939')
+
+<LabelOscurostudent@Label>:
+	canvas.before:
+		Color:
+			rgba: hex('#393939')
+		Rectangle:
+			size: self.size
+			pos: self.pos
+        
+
+<SelectableBoxLayoutGiros>:
+    # Draw a background to indicate selection
+    canvas.before:
+        Color:
+            rgba: hex('#C9F3EF') if self.selected else hex('#F0F0F0')
+        Rectangle:
+            pos: self.pos
+            size: self.size
+	
+	Label:
+    	id: _hashtag
+    	size_hint_x: .1
+    	color: (0,0,0,1)
+    
+    Label:
+    	id: _Valor
+    	size_hint_x: .5
+    	color: (0,0,0,1)
+	
+	Label:
+    	id: _Fecha
+    	size_hint_x: .3
+    	color: (0,0,0,1)
+   
+
+<AgregarGiroPopup>:
+    size_hint: .5, .5
+    auto_dismiss: False
+    title: 'Agregar Giro'
+	halign: 'center'
+	bold: True        # Texto en negrita
+    italic: True
+    BoxLayout:
+	    orientation: 'vertical'
+	    padding: .05
+	    Label:
+	    	size_hint_y: .1
+	    	id: usuario_info_1
+	    Label:
+	    	id: no_valid_notif
+	    	size_hint_y: .1
+	    
+		TextInput: 
+			size_hint_y: .2
+			id: estudiante_Valor
+			multiline: False
+			hint_text: 'Valor'
+			write_tab: False
+		
+		TextInput:
+			size_hint_y: .2 
+			id: estudiante_Fecha
+			multiline: False
+			hint_text: 'Fecha DD/MM/AA'
+			write_tab: False
+		
+	
+		BoxLayout:
+			size_hint_y: .2
+			Button: 
+				text: 'Agregar'
+				on_release: root.verificar(estudiante_Fecha.text, estudiante_Valor.text)
+			Button:
+				text: 'Salir'
+				on_release: root.dismiss()
+
+
+<EstudentRV>:
+    SelectableRecycleBoxLayoutstudent:
+        default_size: None, dp(36)
+        default_size_hint: 1, None
+        size_hint_y: None
+        height: self.minimum_height
+        orientation: 'vertical'
+        multiselect: False
+        touch_multiselect: False
+
+<StudentWindow>:
+	canvas.before:
+		Color:
+			rgba: hex('#1EA82A')
+		Rectangle:
+			size: self.size
+			pos: self.pos
+	orientation: 'vertical'
+	BoxLayout:
+		size_hint_y: .2
+		spacing: .2
+
+		GridLayout:
+			size_hint_x: .7
+			rows: 2
+			cols: 2
+
+			Label:
+            	id: Nombre_label
+				text: 'Nombre: '
+				size_hint_x: .2
+				color: hex('#000000')
+
+			Label:
+            	id: Cedula_label
+				text: 'Cedula: '
+				size_hint_x: .5
+				color: hex('#000000')
+
+			Label:
+            	id: Banco_label
+				text: 'Banco: '
+				size_hint_x: .2
+				color: hex('#000000')
+			Label:
+            	id: Numero_label
+				text: 'Cuenta N°: '
+				size_hint_x: .5
+				color: hex('#000000')
+			
+		        
+        BotonOscurostudent:
+			text: 'Volver'
+            size_hint_x: .1
+			border: (1, 1, 1, 1)  # Ancho del borde en píxeles: (arriba, derecha, abajo, izquierda)
+    		border_color: hex('#FFFFFF')
+			on_release: root.volver_inicio()
+
+	BoxLayout:
+		canvas.before:
+			Color:
+				rgba: hex('#FFFFFF')
+			Rectangle:
+				size: self.size
+				pos: self.pos
+		size_hint_y: .87
+		spacing: .5
+		BoxLayout:
+			size_hint_x: .7
+			orientation: 'vertical'
+			spacing: .5
+
+			BoxLayout:
+				size_hint_y: .8
+				orientation: 'vertical'
+				BoxLayout:
+					size_hint_y: .05
+					spacing: .5
+					LabelOscurostudent:
+						text: '#'
+						size_hint_x: .1
+					LabelOscurostudent:
+						text: 'Valor'
+						size_hint_x: .5
+					LabelOscurostudent:
+						text: 'Fecha'
+						size_hint_x: .3
+					
+				EstudentRV:
+				    viewclass: 'SelectableBoxLayoutGiros'
+					id: rve
+			BoxLayout:
+				size_hint_y: .1
+				spacing: .5
+				BotonOscurostudent:
+					text: 'Agregar Giro'
+					on_release: root.agregar_giro()
+				BotonOscurostudent:
+					text: 'Modificar Giro'
+					on_release: root.modificar_giro()
+		BoxLayout:
+			size_hint_x: .3
+			orientation: 'vertical'
+			canvas.before:
+				Color:
+					rgba: hex('#393939')
+				Rectangle:
+					size: self.size
+					pos: self.pos
+			GridLayout:
+				canvas.before:
+					Color:
+						rgba: hex('#393939')
+					Rectangle:
+						size: self.size
+						pos: self.pos
+				size_hint_y: .4
+				rows: 5
+				cols: 1
+				Label:
+					text: ' '
+				Label:
+					text: 'Total Prestado'
+				Label:
+					id: total
+					text: '0.00'
+				Label: 
+					text: 'Total Con Interes'
+				Label:
+					id: interes
+					text: '0.00'
+			BoxLayout:
+				size_hint_y: .6
+				orientation: 'vertical'
+				spacing: .5
+				canvas.before:
+					Color:
+						rgba: hex('#5E6262')
+					Rectangle:
+						size: self.size
+						pos: self.pos
+				Label:
+					text: 'Mensaje'
+					size_hint_y: .25
+					color: hex('#FFFFFF')
+
+				
+				Label:
+					id: notificacion_exito
+					size_hint_y: .5
+					color: hex('#FFFFFF')
+					text_size: self.width, None  # Ajustar el texto al ancho del Label
+					halign: 'center'
+				BotonOscurostudent:
+					size_hint_y: .17
+					text: 'Exportar BD'
+					on_release: root.crear_csv()
+	
+				BotonOscurostudent:
+					size_hint_y: .21
+					text: 'Borrar Giro'
+					on_release: root.eliminar_giro()
+	
+	BoxLayout:
+		size_hint_y: .03
