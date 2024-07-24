@@ -1,0 +1,295 @@
+#:import hex kivy.utils.get_color_from_hex
+
+<BotonOscurohome@Button>:
+	background_normal: ''
+	background_color: hex('#393939')
+
+<LabelOscurohome@Label>:
+	canvas.before:
+		Color:
+			rgba: hex('#393939')
+		Rectangle:
+			size: self.size
+			pos: self.pos
+
+<SelectableBoxLayouthome>:
+    # Draw a background to indicate selection
+    canvas.before:
+        Color:
+            rgba: hex('#C9F3EF') if self.selected else hex('#F0F0F0')
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    Label:
+    	id: _hashtag
+    	size_hint_x: .1
+    	color: (0,0,0,1)
+    Label:
+    	id: _grupo
+    	size_hint_x: .3
+    	color: (0,0,0,1)
+    Label:
+    	id: _codigo
+    	size_hint_x: .3
+    	color: (0,0,0,1)
+    Label:
+    	id: _numero de estudiantes
+    	size_hint_x: .15
+    	color: (0,0,0,1)
+    Label:
+    	id: _fecha de ingreso
+    	size_hint_x: .3
+    	color: (0,0,0,1)
+
+<ConfirmacionPopup>:
+    size_hint: .5, .5
+    auto_dismiss: False
+    title: 'Confirmar Eliminar Grupo'
+	halign: 'center'
+	bold: True        # Texto en negrita
+    italic: True
+    BoxLayout:
+	    orientation: 'vertical'
+	    padding: .5
+	    Label: 
+			size_hint_y: .4
+	    	text: 'Seguro que quiere eliminar todos los datos de este grupo'
+			text_size: self.width, None  # Ajustar el texto al ancho del Label
+			halign: 'center'
+			color: hex('#FFFFFF')
+	
+		BoxLayout:
+			size_hint_y: .1
+			Button: 
+				text: 'Aceptar'
+				on_release:
+					root.eliminar_grupo(True)
+					root.dismiss()
+			Button:
+				text: 'Salir'
+				on_release: root.dismiss()
+
+
+<AgregargrupoPopup>:
+    size_hint: .5, .5
+    auto_dismiss: False
+    title: 'Agregar Grupo'
+	halign: 'center'
+	bold: True        # Texto en negrita
+    italic: True
+    BoxLayout:
+	    orientation: 'vertical'
+	    padding: .05
+	    Label:
+	    	size_hint_y: .1
+	    	id: usuario_info_1
+	    Label:
+	    	id: no_valid_notif
+	    	size_hint_y: .1
+	    TextInput: 
+			id: grupo_codigo
+			size_hint_y: .2
+			multiline: False
+			hint_text: 'Codigo'
+			write_tab: False
+		TextInput: 
+			size_hint_y: .2
+			id: grupo_username
+			multiline: False
+			hint_text: 'Nombre del Grupo'
+			write_tab: False
+		TextInput:
+			size_hint_y: .2
+			id: grupo_numero
+			multiline: False
+			hint_text: 'Numero de estudiantes'
+			write_tab: False
+		TextInput:
+			size_hint_y: .2
+			id: grupo_fecha
+			multiline: False
+			hint_text: 'Fecha de ingreso DD/MM/AA'
+			write_tab: False
+
+	
+		BoxLayout:
+			size_hint_y: .2
+			Button: 
+				text: 'Agregar'
+				on_release: root.verificar(grupo_username.text, grupo_codigo.text, grupo_numero.text, grupo_fecha.text)
+			Button:
+				text: 'Salir'
+				on_release: root.dismiss()
+
+
+<RV>:
+    SelectableRecycleBoxLayouthome:
+        default_size: None, dp(36)
+        default_size_hint: 1, None
+        size_hint_y: None
+        height: self.minimum_height
+        orientation: 'vertical'
+        multiselect: False
+        touch_multiselect: False
+
+<HomeWindow>:
+# Apply green color to the box and Add the text Bienvenido
+	canvas.before:
+		Color:
+			rgba: hex('#1EA82A')
+		Rectangle:
+			size: self.size
+			pos: self.pos
+	orientation: 'vertical'
+	
+	BoxLayout:
+		size_hint_y: .05
+		spacing: .2
+		Label:
+			id: bienvenido_label
+			size_hint_x: 5
+			text: 'Bienvenido'
+			color: hex('#000000')
+		Label: 
+			size_hint_x: .5
+# The box was made to show the user, date, time and change profile and each one is configured.	
+	BoxLayout:
+		size_hint_y: .1
+		spacing: .2
+		Label:
+			id: bienvenido_Usuario
+			size_hint_x: .1
+			text: 'Usuario: '
+			color: hex('#000000')
+# GridLayout is not necessary
+		GridLayout:
+			size_hint_x: .25
+			rows: 1
+			cols: 4
+			Label: 
+				text: 'Fecha: '
+				color: hex('#000000')
+	
+			Label: 
+				id: fecha
+				color: hex('#000000')
+		
+			Label: 
+				text: 'Hora: '
+				color: hex('#000000')
+		
+			Label: 
+				id: hora
+				color: hex('#000000')
+		Label: 
+			size_hint_x: .2
+		
+		
+# the box is set to search for each student			
+	BoxLayout:
+		size_hint_y: .05
+		spacing: .5
+		
+		LabelOscurohome:
+			size_hint_x: .5
+			text: 'Descargue la Base de Datos'
+		
+		BotonOscurohome: 
+			size_hint_x: .113
+			text: 'Crear BD'
+			on_release: root.crear_csv()
+		BotonOscurohome:
+			size_hint_x: .113
+			text: 'Actualizar BD'
+			on_release: root.actualizar_BD()
+
+# the box contains the statements for each groups	
+	BoxLayout:
+		canvas.before:
+			Color:
+				rgba: hex('#FFFFFF')
+			Rectangle:
+				size: self.size
+				pos: self.pos
+		size_hint_y: .87
+		spacing: .5
+		orientation: 'vertical'
+		BoxLayout:
+			size_hint_y: .05
+			spacing: .5
+			LabelOscurohome:
+				text: '#'
+				size_hint_x: .1
+			LabelOscurohome:
+				text: 'Grupo'
+				size_hint_x: .3
+			LabelOscurohome:
+				text: 'Codigo'
+				size_hint_x: .3
+			LabelOscurohome:
+				text: 'Numero de estudiantes'
+				size_hint_x: .15
+			LabelOscurohome:
+				text: 'Fecha de ingreso'
+				size_hint_x: .3
+		RV:
+			viewclass: 'SelectableBoxLayouthome'
+			id: rvs
+		
+# the box is configured for modifying and deleting the groups	
+	BoxLayout:
+		size_hint_y: .115
+		BotonOscurohome:
+			text: 'Agregar Grupo'
+			on_release: root.agregar_grupo()
+		BotonOscurohome:
+			text: 'Ver Detalles'
+			on_release: root.detalle_grupo()
+		BotonOscurohome:
+			text: 'Eliminar Grupo'
+			on_release: root.confirmar_eliminar()
+
+# the box is set to show the loan and interest 
+	BoxLayout: 
+		canvas.before:
+			Color:
+				rgba: hex('#393939')
+			Rectangle:
+				size: self.size
+				pos: self.pos
+		size_hint_y: .05
+		Label: 
+			text: 'Total Prestado'
+			size_hint_x: .2
+			color: hex('#E53115')
+		Label:
+			id: total
+			text: '0.00'
+			size_hint_x: .4
+		Label:
+			text: 'Total Con Interes'
+			size_hint_x: .1
+		Label:
+			id: interes
+			text: '0.00'
+			size_hint_x: .4
+	
+	BoxLayout: 
+		canvas.before:
+			Color:
+				rgba: hex('#393939')
+			Rectangle:
+				size: self.size
+				pos: self.pos
+		size_hint_y: .1
+		Label:
+			id: notificacion_exito
+			color: hex('#FFFFFF')
+			text_size: self.width, None  # Ajustar el texto al ancho del Label
+			halign: 'center'
+		
+		
+	BoxLayout:
+		size_hint_y: .03
+		
+	
